@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="en"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>TryCLI demo</title>
+<style>
+*{box-sizing:border-box}body{margin:0;background:#f5f4ed;color:#202c27;font:16px/1.5 Inter,system-ui,sans-serif}main,header{max-width:1080px;margin:auto;padding:24px}header{border-bottom:1px solid #c7cdc4;font-weight:800;letter-spacing:-.04em}header span{color:#39704c}h1{font:700 clamp(32px,6vw,64px)/1.05 ui-monospace,monospace;letter-spacing:-.065em;margin:35px 0 12px;overflow-wrap:anywhere}p{margin:0 0 26px}nav{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:18px}button{font:inherit;cursor:pointer;border:1px solid #a8b6aa;color:inherit;border-radius:6px;background:transparent;padding:8px 14px}button[aria-pressed=true]{background:#224935;color:white}button:focus-visible{outline:3px solid #d68425;outline-offset:2px}.panes{display:grid;grid-template-columns:2fr 3fr;gap:12px}.pane{min-width:0;background:#fff;border:1px solid #cad0c7;border-radius:10px;padding:20px}.result{background:#162c23;color:#edf6eb;border-color:#162c23}h2{font-size:13px;margin:0;color:#52705e}.result h2{color:#b1d8ba}.row{display:flex;justify-content:space-between;align-items:center;gap:10px}.row button{font-size:13px;padding:4px 9px}pre{font:15px/1.6 ui-monospace,Consolas,monospace;white-space:pre-wrap;overflow-wrap:anywhere}#command{color:#c2f2a3;border-bottom:1px solid #426250;padding-bottom:18px}footer{margin:18px 0;color:#506256;font-size:13px}@media(max-width:680px){.panes{grid-template-columns:1fr}main,header{padding:16px}}
+textarea{width:100%;min-height:7em}button{min-height:42px}button,textarea{max-width:100%;overflow-wrap:anywhere}
+</style>
+<header><span>&gt;_</span> TryCLI</header><main><h1></h1><p id="description"></p><nav aria-label="Choose an example"></nav>
+<div class="panes"><section class="pane"><h2>Standard input</h2><pre id="input"></pre></section>
+<section class="pane result"><div class="row"><h2>Command</h2><button id="copy">Copy runnable example</button></div>
+<pre id="command"></pre><textarea id="manual" hidden readonly aria-label="Select and copy the POSIX shell example"></textarea><h2>Recorded output</h2><pre id="output" aria-live="polite"></pre></section></div>
+<footer>Recorded examples · Runs offline · Copy uses POSIX shell syntax</footer></main>
+<script type="application/json" id="data">RECIPE_DATA</script>
+<script>
+const demo = JSON.parse(document.querySelector('#data').textContent);
+const el = selector => document.querySelector(selector);
+document.title = demo.tool + ' | TryCLI';
+el('h1').textContent = demo.tool;
+el('#description').textContent = demo.description;
+el('#input').textContent = demo.input;
+function quote(arg) {
+  return /^[a-zA-Z0-9_./:=+-]+$/.test(arg) ? arg : "'" + arg.replaceAll("'", "'\\''") + "'";
+}
+const buttons = demo.examples.map((example, i) => {
+  const button = document.createElement('button');
+  button.textContent = example.label;
+  button.onclick = () => { location.hash = 'example-' + (i + 1); select(i); };
+  el('nav').append(button);
+  return button;
+});
+function select(i) {
+  el('#manual').hidden = true;
+  const example = demo.examples[i];
+  buttons.forEach((button, j) => button.setAttribute('aria-pressed', String(i === j)));
+  el('#command').textContent = example.args.map(quote).join(' ');
+  el('#output').textContent = example.output || '(no output)';
+  el('#copy').textContent = 'Copy runnable example';
+}
+el('#copy').onclick = async () => {
+  const command = "printf '%s' " + quote(demo.input) + ' | ' + el('#command').textContent;
+  const active = location.hash;
+  try {
+    await navigator.clipboard.writeText(command);
+    if (active !== location.hash) return;
+    el('#copy').textContent = 'Copied';
+  } catch {
+    if (active !== location.hash) return;
+    const manual = el('#manual');
+    manual.hidden = false;
+    manual.value = command;
+    manual.focus();
+    manual.select();
+  }
+};
+function restoreSelection() {
+  const match = /^#example-([1-9][0-9]*)$/.exec(location.hash);
+  const index = match ? Number(match[1]) - 1 : 0;
+  select(index < buttons.length ? index : 0);
+}
+window.addEventListener('hashchange', restoreSelection);
+restoreSelection();
+</script></html>

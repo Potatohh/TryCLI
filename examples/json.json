@@ -1,0 +1,10 @@
+{
+  "tool": "python -m json.tool",
+  "description": "Turn compact JSON into readable, sorted or compressed output.",
+  "input": "{\"city\":\"Istanbul\",\"orders\":[12,7],\"active\":true}\n",
+  "examples": [
+    {"label":"Pretty-print JSON","args":["python","-m","json.tool"]},
+    {"label":"Sort the keys","args":["python","-m","json.tool","--sort-keys"]},
+    {"label":"Compact output","args":["python","-m","json.tool","--compact"]}
+  ]
+}

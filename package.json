@@ -1,0 +1,12 @@
+{
+  "name": "trycli",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Record command-line examples and share them in one offline HTML file.",
+  "license": "MIT",
+  "scripts": {
+    "test": "node --test build.test.mjs",
+    "test:browser": "node tests/browser.cjs"
+  },
+  "devDependencies": {"playwright-core": "1.63.0"}
+}

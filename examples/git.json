@@ -1,0 +1,10 @@
+{
+  "tool": "git stripspace",
+  "description": "Clean up a commit message before saving it.",
+  "input": "Ship the demo   \n\n\n# Draft note\n\nWorks offline.   \n",
+  "examples": [
+    {"label":"Clean whitespace","args":["git","-c","core.commentChar=#","stripspace"]},
+    {"label":"Remove comment lines","args":["git","-c","core.commentChar=#","stripspace","--strip-comments"]},
+    {"label":"Comment every line","args":["git","-c","core.commentChar=#","stripspace","--comment-lines"]}
+  ]
+}
