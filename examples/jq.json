@@ -1,0 +1,10 @@
+{
+  "tool": "jq",
+  "description": "Why does jq put quotes around my output? Compare a JSON string, raw text and an array.",
+  "input": "{\"name\":\"Ada\",\"roles\":[\"author\",\"editor\"]}\n",
+  "examples": [
+    {"label":"Read a JSON string","args":["jq",".name"]},
+    {"label":"Get raw text","args":["jq","-r",".name"]},
+    {"label":"Try raw output on an array","args":["jq","-r",".roles"]}
+  ]
+}

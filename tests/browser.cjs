@@ -10,7 +10,7 @@ const {pathToFileURL} = require('node:url');
  const ctx=await browser.newContext({viewport:{width,height:800},offline:engine!=='webkit'});
  const page=await ctx.newPage();
  const errors=[]; page.on('pageerror',e=>errors.push(e.message));
- for(const name of ['json','git']){
+ for(const name of ['json','git','jq']){
  const url=pathToFileURL(resolve('examples/'+name+'.html')).href;
  await page.goto(url+'#example-2');
  if(engine==='chromium' && width===1280 && name==='git' && process.env.TRYCLI_SCREENSHOT) await page.locator('main').screenshot({path:'docs/demo.png'});

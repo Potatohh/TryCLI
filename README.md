@@ -4,7 +4,13 @@ Give someone three commands to try before they install your tool. TryCLI records
 
 [Try the Git demo](https://raw.githack.com/Potatohh/TryCLI/main/examples/git.html#example-2) · [Try the JSON demo](https://raw.githack.com/Potatohh/TryCLI/main/examples/json.html)
 
-![Git stripspace removing a draft comment from a commit message](docs/demo.png)
+### Why does jq put quotes around my output?
+
+On the same input, `jq .name` prints `"Ada"` and `jq -r .name` prints `Ada`. Select the array example to see where raw output stops making a difference.
+
+[![Three recorded jq commands showing JSON strings, raw text and arrays](docs/jq.gif)](https://raw.githack.com/Potatohh/TryCLI/main/examples/jq.html)
+
+[Open the interactive jq demo](https://raw.githack.com/Potatohh/TryCLI/main/examples/jq.html)
 
 ## Make your first demo
 
